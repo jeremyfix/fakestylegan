@@ -6,6 +6,11 @@
 # http://creativecommons.org/licenses/by-nc-sa/4.0/ or send a letter to
 # Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
 
+'''
+This module provides the code required to align an image containing
+a single face using the dlib pretrained networks for face landmark detection
+'''
+
 # Standard imports
 import logging
 import bz2
@@ -183,6 +188,10 @@ if __name__ == '__main__':
         print(f"Usage: {' '.join(sys.argv)} image")
         sys.exit(-1)
 
+    logging.info('Loading the source image')
     img = PIL.Image.open(sys.argv[1])
+    logging.info('Aligning the image')
     aligned_img = aligner(img)
+    aligned_img.save('aligned.jpg')
+    logging.info('Result saved in aligned.jpg')
     aligned_img.show()
