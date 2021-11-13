@@ -10,6 +10,8 @@
 import numpy as np
 import dlib
 import PIL
+from pathlib import Path
+import logging
 
 class Aligner:
 
@@ -32,9 +34,12 @@ class Aligner:
         # Check if we have the pretrained predictor
         # If not download it
         #TODO
+        p = Path("./shape_predictor_68_face_landmarks.dat")
+        if not p.exists():
+            logging.debug(f"{p} is not present, downloading it") 
+            return
 
-        predictor_model_path = "./shape_predictor_68_face_landmarks.dat"
-        self.shape_predictor = dlib.shape_predictor(predictor_model_path)
+        self.shape_predictor = dlib.shape_predictor(str(p))
 
     # The following code is adapted from the one released under CC-BY-NC-SA 4.0 
     # by NVIDIA https://github.com/NVlabs/ffhq-dataset/blob/master/download_ffhq.py
