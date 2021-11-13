@@ -16,12 +16,13 @@ import logging
 import bz2
 import sys
 from pathlib import Path
-import urllib.request
 # External modules
 import numpy as np
 import dlib
 import PIL
 import PIL.Image
+# Local imports
+from . import downloader
 
 class Aligner:
 
@@ -46,19 +47,9 @@ class Aligner:
         p = Path("./shape_predictor_68_face_landmarks.dat")
         if not p.exists():
             logging.debug(f"{p} is not present, downloading it") 
-            decompressor = bz2.BZ2Decompressor()
-            with urllib.request.urlopen("http://dlib.net/files/shape_predictor_68_face_landmarks.dat.bz2") as response:
-                totsize = int(response.getheader('Content-Length'))
-                size = 0
-                with open(p, 'wb') as shapefile:
-                    while not decompressor.eof:
-                        resp_data = response.read(1024)
-                        size += len(resp_data)
-                        data = decompressor.decompress(resp_data)
-                        sys.stdout.write('\r ' + f"{size/1024**2:.2f} Mo / {totsize/1024**2:.2f} Mo")
-                        sys.stdout.flush()
-                        shapefile.write(data)
-                sys.stdout.write('\n')
+            downloader.downloadfile("http://dlib.net/files/shape_predictor_68_face_landmarks.dat.bz2",
+                                    p,
+                                    isbz2=True)
 
         self.shape_predictor = dlib.shape_predictor(str(p))
 
