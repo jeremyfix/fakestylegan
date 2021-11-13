@@ -11,7 +11,10 @@ import numpy as np
 import dlib
 import PIL
 from pathlib import Path
+import urllib.request
 import logging
+import bz2
+import sys
 
 class Aligner:
 
@@ -32,12 +35,23 @@ class Aligner:
 
         self.detector = dlib.get_frontal_face_detector()
         # Check if we have the pretrained predictor
-        # If not download it
-        #TODO
+        # If not download it and save it to disk
         p = Path("./shape_predictor_68_face_landmarks.dat")
         if not p.exists():
             logging.debug(f"{p} is not present, downloading it") 
-            return
+            decompressor = bz2.BZ2Decompressor()
+            with urllib.request.urlopen("http://dlib.net/files/shape_predictor_68_face_landmarks.dat.bz2") as response:
+                totsize = int(response.getheader('Content-Length'))
+                size = 0
+                with open(p, 'wb') as shapefile:
+                    while not decompressor.eof:
+                        resp_data = response.read(1024)
+                        size += len(resp_data)
+                        data = decompressor.decompress(resp_data)
+                        sys.stdout.write('\r ' + f"{size/1024**2:.2f} Mo / {totsize/1024**2:.2f} Mo")
+                        sys.stdout.flush()
+                        shapefile.write(data)
+                sys.stdout.write('\n')
 
         self.shape_predictor = dlib.shape_predictor(str(p))
 
