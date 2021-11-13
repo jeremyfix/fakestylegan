@@ -46,7 +46,7 @@ class Projector:
         img = img.squeeze().permute(1, 2, 0)
         img = img.numpy()
         plt.figure()
-        plt.imshow(img)
+        plt.imshow((1.0 + img)/2.0)
         plt.show()
 
 
