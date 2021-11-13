@@ -15,9 +15,9 @@ import sys
 import numpy as np
 import PIL.Image
 # Local imports
-import align
+import fakestylegan
 
-aligner = align.Aligner()
+aligner = fakestylegan.align.Aligner()
 
 # Load in-the-wild image.
 if len(sys.argv) != 2:
