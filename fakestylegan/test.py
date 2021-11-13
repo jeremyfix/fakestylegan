@@ -20,6 +20,10 @@ import align
 aligner = align.Aligner()
 
 # Load in-the-wild image.
+if len(sys.argv) != 2:
+    print(f"Usage: {' '.join(sys.argv)} image")
+    sys.exit(-1)
+
 img = PIL.Image.open(sys.argv[1])
 img = aligner(img)
 img.show()
