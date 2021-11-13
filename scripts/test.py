@@ -25,5 +25,5 @@ if len(sys.argv) != 2:
     sys.exit(-1)
 
 img = PIL.Image.open(sys.argv[1])
-img = aligner(img)
-img.show()
+aligned_img = aligner(img)
+aligned_img.show()
