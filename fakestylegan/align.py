@@ -6,15 +6,17 @@
 # http://creativecommons.org/licenses/by-nc-sa/4.0/ or send a letter to
 # Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
 
+# Standard imports
+import logging
+import bz2
+import sys
+from pathlib import Path
+import urllib.request
 # External modules
 import numpy as np
 import dlib
 import PIL
-from pathlib import Path
-import urllib.request
-import logging
-import bz2
-import sys
+import PIL.Image
 
 class Aligner:
 
@@ -170,3 +172,17 @@ class Aligner:
         landmarks = [(item.x, item.y) for item in self.shape_predictor(np_img, selected_detection).parts()]
 
         return self._align_image(img, landmarks)
+
+
+if __name__ == '__main__':
+
+    aligner = Aligner()
+
+    # Load in-the-wild image.
+    if len(sys.argv) != 2:
+        print(f"Usage: {' '.join(sys.argv)} image")
+        sys.exit(-1)
+
+    img = PIL.Image.open(sys.argv[1])
+    aligned_img = aligner(img)
+    aligned_img.show()

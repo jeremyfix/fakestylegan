@@ -12,3 +12,13 @@ Expected target:
 ## Installation
 
     python3 -m pip install git+https://github.com/jeremyfix/fakestylegan
+
+## Testing
+
+### Alignment
+
+For testing the alignment code, which is the one used by [NVlabs](https://github.com/NVlabs/ffhq-dataset/blob/master/download_ffhq.py) for realigning their input face image, you can :
+
+    python3 -m fakestylegan.align mysourceimage.jpg
+
+
