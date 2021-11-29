@@ -13,6 +13,18 @@ Expected target:
 
     python3 -m pip install git+https://github.com/jeremyfix/fakestylegan
 
+You also need to have the `dnnlib` and `torch_utils` directories from the original [stylegan3](https://github.com/NVlabs/stylegan3) repository.
+
+Then, if you are using a GPU, you need to set the `CUDA_HOME` variable appropriately :  
+
+```
+export CUDA_HOME=/usr/local/cuda-11
+```
+
+and then have fun without our scripts, for example 
+
+    python3 -m fakestylegan.generator
+
 ## Testing
 
 ### Alignment
