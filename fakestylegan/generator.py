@@ -66,7 +66,7 @@ class Generator:
 if __name__ == '__main__':
     torch.manual_seed(3)
 
-    gen = Generator(network="stylegan3-r-ffhqu-256x256.pkl")
+    gen = Generator() #network="stylegan3-r-ffhqu-256x256.pkl")
 
     def save_img(np_img, idx):
         pilimg = Image.fromarray( (np_img.clip(0, 1)*255).astype('uint8'))

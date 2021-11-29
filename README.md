@@ -39,3 +39,5 @@ The video in [./examples/faces.py] has been generated with `python3 -m fakestyle
 latent space to illustrate its topology and the incredible power of stylegan to generate faces.
 
 [![See stylegan3 in action](https://img.youtube.com/vi/zcMtTOfhJhk/hqdefault.jpg)](https://youtu.be/zcMtTOfhJhk)
+
+The interpolation scripts takes 30 seconds on a Geforce 3090, generating 200 images.
