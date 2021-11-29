@@ -33,4 +33,7 @@ For testing the alignment code, which is the one used by [NVlabs](https://github
 
     python3 -m fakestylegan.align mysourceimage.jpg
 
+### Interpolation in the latent space
 
+The video in [./examples/faces.py] has been generated with `python3 -m fakestylegan.generator` and goes around in the
+latent space to illustrate its topology and the incredible power of stylegan to generate faces.
