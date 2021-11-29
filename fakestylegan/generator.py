@@ -18,8 +18,9 @@ import pickle
 import tqdm
 import torch
 from PIL import Image
-
 import matplotlib.pyplot as plt
+# Local imports
+import torch_utils
 
 class Generator:
 
@@ -41,7 +42,12 @@ class Generator:
         # pythonpath
         with open(p, 'rb') as f:
                 G = pickle.load(f)['G_ema']  # torch.nn.Module
+        if torch.cuda.is_available():
+            self.device = torch.device('cuda')
+        else:
+            self.device = torch.device('cpu')
         self.G = G
+        self.G.to(self.device)
 
     @property
     def zdim(self):
@@ -49,16 +55,16 @@ class Generator:
 
     def __call__(self, z=None):
         if z is None:
-            z = torch.randn([1, self.G.z_dim])    # latent codes
+            z = torch.randn([1, self.G.z_dim]).to(self.device)    # latent codes
         c = None            # class labels
         img = self.G(z, c)  # NCHW, float32, dynamic range [-1, +1], no truncation
-        img = img.squeeze().permute(1, 2, 0)
-        img = img.numpy()
+        img = img.detach().squeeze().permute(1, 2, 0)
+        img = img.cpu().numpy()
         return (1.0 + img)/2.0, z
 
 
 if __name__ == '__main__':
-    torch.manual_seed(0)
+    torch.manual_seed(3)
 
     gen = Generator(network="stylegan3-r-ffhqu-256x256.pkl")
 
@@ -66,21 +72,27 @@ if __name__ == '__main__':
         pilimg = Image.fromarray( (np_img.clip(0, 1)*255).astype('uint8'))
         pilimg.save(f"img-{idx:04d}.jpg")
 
-
     idx = 0
 
-    img, z0 = gen()
+    z0 = None
+    # z0 = torch.zeros((1, gen.zdim), device=gen.device)
+    img, z00 = gen(z0)
     save_img(img, idx)
     idx += 1
 
     # Random walk
-    dz = torch.rand((gen.zdim, ))
-    dz = dz / dz.norm()
-    Nsteps = 10
-    for i, amp in tqdm.tqdm(enumerate(torch.linspace(0, 1, Nsteps))):
-        z = z0 + amp * dz
-        img, _ = gen(z)
-        save_img(img, idx)
-        idx += 1
-    
-
+    z0 = z00
+    Ntargets = 4
+    for j in range(Ntargets):
+        Nsteps = 50
+        if j == Ntargets - 1 :
+            # loop back to the first image
+            zf = z00
+        else:
+            zf = torch.randn([1, gen.zdim], device=gen.device)
+        for i in tqdm.tqdm(range(1, Nsteps+1)):
+            z = z0 + i*(zf - z0)/Nsteps
+            img, _ = gen(z)
+            save_img(img, idx)
+            idx += 1
+        z0 = zf
