@@ -35,7 +35,7 @@ For testing the alignment code, which is the one used by [NVlabs](https://github
 
 ### Interpolation in the latent space
 
-The video in [./examples/faces.py] has been generated with `python3 -m fakestylegan.generator` and goes around in the
+The video in [./examples/faces.avi] has been generated with `python3 -m fakestylegan.generator` and goes around in the
 latent space to illustrate its topology and the incredible power of stylegan to generate faces.
 
 [![See stylegan3 in action](https://img.youtube.com/vi/xNXCXO3LpEI/hqdefault.jpg)](https://youtu.be/xNXCXO3LpEI)
