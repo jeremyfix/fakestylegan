@@ -41,3 +41,9 @@ latent space to illustrate its topology and the incredible power of stylegan to 
 [![See stylegan3 in action](https://img.youtube.com/vi/xNXCXO3LpEI/hqdefault.jpg)](https://youtu.be/xNXCXO3LpEI)
 
 The interpolation scripts takes 30 seconds on a Geforce 3090, generating 200 images.
+
+## References
+
+Interesting papers are :
+
+R. Abdal, Y. Qin, P. Wonka (2019). Image2StyleGAN : How to embed images into the styleGAN latent space. https://arxiv.org/pdf/1904.03189.pdf
